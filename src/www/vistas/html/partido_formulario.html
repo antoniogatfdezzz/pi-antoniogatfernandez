@@ -1,0 +1,85 @@
+<?php /** Vista: formulario edición de partido */ ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Editar Partido</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+<div class="layout-principal">
+    <?php require __DIR__ . '/menu_admin.html'; ?>
+    <main class="area-contenido">
+        <div class="tarjeta">
+            <h1>Editar Partido #<?php echo (int)$partido['id']; ?></h1>
+            <form method="POST" action="index.php?ruta=partidos">
+        <input type="hidden" name="accion" value="actualizar" />
+        <input type="hidden" name="id" value="<?php echo (int)$partido['id']; ?>" />
+        <div class="grupo-form">
+            <label>Equipo Local</label>
+            <input name="equipo_local" value="<?php echo htmlspecialchars($partido['equipo_local']); ?>" required />
+        </div>
+        <div class="grupo-form">
+            <label>Equipo Visitante</label>
+            <input name="equipo_visitante" value="<?php echo htmlspecialchars($partido['equipo_visitante']); ?>" required />
+        </div>
+        <div class="grupo-form">
+            <label>ID Categoría</label>
+            <input name="categoria_id" value="<?php echo htmlspecialchars($partido['categoria_id']); ?>" required />
+        </div>
+        <div class="grupo-form">
+            <label>Fecha</label>
+            <?php 
+            $fechaObj = new DateTime($partido['fecha']);
+            $dia = $fechaObj->format('Y-m-d');
+            $hora = $fechaObj->format('H:i');
+            ?>
+            <input type="date" name="fecha_dia" value="<?php echo $dia; ?>" required />
+            <input type="time" name="fecha_hora" value="<?php echo $hora; ?>" required />
+        </div>
+        <div class="grupo-form">
+            <label>Pabellón</label>
+            <input name="pabellon_nombre" value="<?php echo htmlspecialchars($partido['pabellon_nombre']); ?>" required />
+        </div>
+        <div class="grupo-form">
+            <label>Árbitro Principal</label>
+            <select name="arbitro_principal_id">
+                <option value="">Sin asignar</option>
+                <?php foreach (($arbitros ?? []) as $a): ?>
+                    <option value="<?php echo (int)$a['id']; ?>" <?php echo ((int)($partido['arbitro_principal_id'] ?? 0) === (int)$a['id']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($a['nombre_completo']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="grupo-form">
+            <label>Árbitro Segundo</label>
+            <select name="arbitro_segundo_id">
+                <option value="">Sin asignar</option>
+                <?php foreach (($arbitros ?? []) as $a): ?>
+                    <option value="<?php echo (int)$a['id']; ?>" <?php echo ((int)($partido['arbitro_segundo_id'] ?? 0) === (int)$a['id']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($a['nombre_completo']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="grupo-form">
+            <label>Anotador</label>
+            <select name="anotador_id">
+                <option value="">Sin asignar</option>
+                <?php foreach (($arbitros ?? []) as $a): ?>
+                    <option value="<?php echo (int)$a['id']; ?>" <?php echo ((int)($partido['anotador_id'] ?? 0) === (int)$a['id']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($a['nombre_completo']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+                <button class="boton-primario" type="submit">Guardar Cambios</button>
+                <a class="boton" href="index.php?ruta=partidos">Volver</a>
+            </form>
+        </div>
+    </main>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

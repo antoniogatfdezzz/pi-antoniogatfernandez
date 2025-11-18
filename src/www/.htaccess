@@ -1,0 +1,31 @@
+RewriteEngine On
+RewriteBase /splits-intra/split-1/src/www/
+
+# Deshabilitar listado de directorios (si AllowOverride lo permite)
+Options -Indexes
+
+# Fuerza UTF-8 global
+AddDefaultCharset UTF-8
+
+# Reglas de reescritura: si NO es archivo ni directorio físico -> front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^[^.]+$ index.php [QSA,L]
+
+# Bloquear acceso directo a carpetas internas (seguridad)
+RewriteRule ^(modelos|controladores|sql)/ - [F]
+
+# Cache para assets estáticos (solo si módulo headers activo)
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|png|jpe?g|gif)$">
+    Header set Cache-Control "max-age=604800, public"
+  </FilesMatch>
+</IfModule>
+
+# Denegar acceso a archivos de lógica cuyo nombre empiece por modelo_ o controlador_
+<FilesMatch "^(modelo_|controlador_).+\.php$">
+  Require all denied
+</FilesMatch>
+
+# Página de error interno personalizada (opcional; requiere configuración correcta)
+ErrorDocument 500 /index.php?ruta=login&error=500

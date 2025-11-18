@@ -1,0 +1,44 @@
+<?php /** Parcial: menú lateral para árbitros */
+  $rutaActual = $_GET['ruta'] ?? '';
+  $accionActual = $_GET['accion'] ?? '';
+  $es = function(string $ruta, string $accion = '') use ($rutaActual, $accionActual): string {
+      if ($rutaActual === $ruta && ($accion === '' || $accionActual === $accion)) { return 'activo'; }
+      return '';
+  };
+?>
+<aside class="sidebar" role="complementary" aria-label="Menú árbitro">
+  <div class="logo">Panel Árbitro</div>
+  <div class="usuario">Hola, <?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? ''); ?></div>
+  <div class="separador"></div>
+  <div class="grupo">
+    <div class="grupo-titulo">Navegación</div>
+    <nav>
+      <a class="<?php echo $es('dashboard'); ?>" href="index.php?ruta=dashboard" <?php echo $es('dashboard') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Dashboard
+      </a>
+      <a class="<?php echo $es('mis_partidos'); ?>" href="index.php?ruta=mis_partidos" <?php echo $es('mis_partidos') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Mis Partidos
+      </a>
+    </nav>
+  </div>
+  <div class="grupo">
+    <div class="grupo-titulo">Operaciones</div>
+    <nav>
+      <a class="<?php echo $es('disponibilidad'); ?>" href="index.php?ruta=disponibilidad" <?php echo $es('disponibilidad') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Mi Disponibilidad
+      </a>
+    </nav>
+  </div>
+  <div class="separador"></div>
+  <div class="grupo">
+    <div class="grupo-titulo">Cuenta</div>
+    <nav>
+      <a class="<?php echo $es('perfil'); ?>" href="index.php?ruta=perfil" <?php echo $es('perfil') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Perfil
+      </a>
+      <a class="salir" href="index.php?ruta=logout">
+        <span class="icono" aria-hidden="true"></span> Salir
+      </a>
+    </nav>
+  </div>
+</aside>
