@@ -1,0 +1,101 @@
+<?php /** Vista: listado y gestión de partidos */ ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Partidos</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+<div class="layout-principal">
+    <?php require __DIR__ . '/menu_admin.html'; ?>
+    <main class="area-contenido">
+    <h1>Gestión de Partidos</h1>
+    <?php if (!empty($flash)): ?>
+        <div class="alerta <?php echo $flash['exito'] ? 'exito' : 'error'; ?>"><?php echo htmlspecialchars($flash['mensaje']); ?></div>
+    <?php endif; ?>
+
+    <section class="seccion">
+        <h2>Crear Partido</h2>
+        <form method="POST" action="index.php?ruta=partidos" class="formulario-inline">
+            <input type="hidden" name="accion" value="crear" />
+            <input name="equipo_local" placeholder="Equipo Local" required />
+            <input name="equipo_visitante" placeholder="Equipo Visitante" required />
+            <input name="categoria_id" placeholder="ID Categoría" required />
+            <input type="date" name="fecha_dia" required />
+            <input type="time" name="fecha_hora" required />
+            <input name="pabellon_nombre" placeholder="Pabellón" required />
+            <select name="arbitro_principal_id">
+                <option value="">Árbitro Principal (opcional)</option>
+                <?php foreach (($arbitros ?? []) as $a): ?>
+                    <option value="<?php echo (int)$a['id']; ?>"><?php echo htmlspecialchars($a['nombre_completo']); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <select name="arbitro_segundo_id">
+                <option value="">Árbitro Segundo (opcional)</option>
+                <?php foreach (($arbitros ?? []) as $a): ?>
+                    <option value="<?php echo (int)$a['id']; ?>"><?php echo htmlspecialchars($a['nombre_completo']); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <select name="anotador_id">
+                <option value="">Anotador (opcional)</option>
+                <?php foreach (($arbitros ?? []) as $a): ?>
+                    <option value="<?php echo (int)$a['id']; ?>"><?php echo htmlspecialchars($a['nombre_completo']); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <button class="boton-primario" type="submit">Crear</button>
+        </form>
+    </section>
+
+    <section class="seccion">
+        <h2>Listado de Partidos</h2>
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Local</th>
+                    <th>Visitante</th>
+                    <th>Categoría</th>
+                    <th>Pabellón</th>
+                    <th>Árbitro 1</th>
+                    <th>Árbitro 2</th>
+                    <th>Anotador</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($partidos as $p): ?>
+                <tr>
+                    <td><?php echo (int)$p['id']; ?></td>
+                    <td><?php echo htmlspecialchars($p['fecha']); ?></td>
+                    <td><?php echo htmlspecialchars($p['equipo_local']); ?></td>
+                    <td><?php echo htmlspecialchars($p['equipo_visitante']); ?></td>
+                    <td><?php echo htmlspecialchars($p['categoria_nombre']); ?></td>
+                    <td><?php echo htmlspecialchars($p['pabellon_nombre']); ?></td>
+                    <td><?php echo htmlspecialchars($p['arbitro_principal_nombre_completo'] ?? '-'); ?></td>
+                    <td><?php echo htmlspecialchars($p['arbitro_segundo_nombre_completo'] ?? '-'); ?></td>
+                    <td><?php echo htmlspecialchars($p['anotador_nombre_completo'] ?? '-'); ?></td>
+                    <td>
+                        <form method="GET" action="index.php" class="inline">
+                            <input type="hidden" name="ruta" value="partidos" />
+                            <input type="hidden" name="accion" value="editar" />
+                            <input type="hidden" name="id" value="<?php echo (int)$p['id']; ?>" />
+                            <button class="boton" type="submit">Editar</button>
+                        </form>
+                        <form method="POST" action="index.php?ruta=partidos" class="inline" onsubmit="return confirm('¿Eliminar partido?');">
+                            <input type="hidden" name="accion" value="eliminar" />
+                            <input type="hidden" name="id" value="<?php echo (int)$p['id']; ?>" />
+                            <button class="boton-peligro" type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
+</main>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

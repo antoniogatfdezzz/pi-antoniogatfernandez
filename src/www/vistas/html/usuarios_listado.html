@@ -1,0 +1,60 @@
+<?php /** Vista: listado de usuarios (solo administradores) */ ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <script defer src="js/app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="csrf-token" content="<?php echo htmlspecialchars($token); ?>" />
+    </head>
+<body>
+<div class="layout-principal">
+    <?php require __DIR__ . '/menu_admin.html'; ?>
+  <main class="area-contenido">
+    <h1>Usuarios</h1>
+    <?php if (!empty($flash)): ?>
+        <div class="alerta <?php echo $flash['exito'] ? 'exito' : 'error'; ?>"><?php echo htmlspecialchars($flash['mensaje']); ?></div>
+    <?php endif; ?>
+    <section class="seccion">
+        <h2>Listado de Usuarios Activos</h2>
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Email</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach (($usuarios ?? []) as $u): ?>
+                <tr>
+                    <td><?php echo (int)$u['id']; ?></td>
+                    <td><?php echo htmlspecialchars($u['usuario']); ?></td>
+                    <td><?php echo htmlspecialchars($u['email']); ?></td>
+                    <td><?php echo htmlspecialchars($u['tipo_usuario']); ?></td>
+                    <td>
+                        <div class="acciones-tabla">
+                            <form class="form-eliminar" method="POST" action="index.php?ruta=usuarios&accion=eliminar">
+                                <input type="hidden" name="id" value="<?php echo (int)$u['id']; ?>" />
+                                <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>" />
+                                <button type="submit" class="boton-peligro">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
+    </main>
+</div>
+</body>
+</html>

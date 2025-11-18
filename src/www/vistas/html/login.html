@@ -1,0 +1,29 @@
+<?php /** Vista: formulario de inicio de sesión */ ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body class="contenedor-centro">
+    <div class="tarjeta">
+        <h1 class="titulo">Acceso</h1>
+        <?php if (!empty($flash)): ?>
+            <div class="alerta <?php echo $flash['exito'] ? 'exito' : 'error'; ?>"><?php echo htmlspecialchars($flash['mensaje']); ?></div>
+        <?php endif; ?>
+        <form method="POST" action="index.php?ruta=login">
+            <input type="hidden" name="accion" value="iniciar" />
+            <div class="grupo-form">
+                <label>Usuario</label>
+                <input name="usuario" required maxlength="50" />
+            </div>
+            <div class="grupo-form">
+                <label>Contraseña</label>
+                <input type="password" name="password" required />
+            </div>
+            <button class="boton-primario" type="submit">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>

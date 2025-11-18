@@ -1,0 +1,24 @@
+<?php /** Vista: Dashboard Administrador */ ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Administrador</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+<div class="layout-principal">
+  <?php require __DIR__ . '/menu_admin.html'; ?>
+  <main class="area-contenido">
+    <?php if (!empty($flash)): ?>
+      <div class="alerta <?php echo $flash['exito'] ? 'exito' : 'error'; ?>"><?php echo htmlspecialchars($flash['mensaje']); ?></div>
+    <?php endif; ?>
+    <div class="bloque">
+      <h2>Bienvenido <?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? ''); ?></h2>
+      <p class="texto-secundario">Utiliza el menú lateral para gestionar partidos, usuarios y revisar disponibilidad de árbitros.</p>
+    </div>
+    
+  </main>
+</div>
+</body>
+</html>

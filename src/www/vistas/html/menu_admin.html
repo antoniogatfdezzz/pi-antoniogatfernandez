@@ -1,0 +1,50 @@
+<?php /** Parcial: menú lateral para administradores */ 
+  $rutaActual = $_GET['ruta'] ?? '';
+  $accionActual = $_GET['accion'] ?? '';
+  $es = function(string $ruta, string $accion = '') use ($rutaActual, $accionActual): string {
+      if ($rutaActual === $ruta && ($accion === '' || $accionActual === $accion)) { return 'activo'; }
+      return '';
+  };
+?>
+<aside class="sidebar" role="complementary" aria-label="Menú administrador">
+  <div class="logo">Panel Administrador</div>
+  <div class="usuario">Hola, <?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? ''); ?></div>
+  <div class="separador"></div>
+  <div class="grupo">
+    <div class="grupo-titulo">Navegación</div>
+    <nav>
+      <a class="<?php echo $es('dashboard'); ?>" href="index.php?ruta=dashboard" <?php echo $es('dashboard') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Dashboard
+      </a>
+      <a class="<?php echo $es('partidos'); ?>" href="index.php?ruta=partidos" <?php echo $es('partidos') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Partidos
+      </a>
+    </nav>
+  </div>
+  <div class="grupo">
+    <div class="grupo-titulo">Gestión</div>
+    <nav>
+      <!---<a class="<?php echo $es('partidos','crear'); ?>" href="index.php?ruta=partidos&accion=crear" <?php echo $es('partidos','crear') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Crear Partido
+      </a>-->
+      <a class="<?php echo $es('usuarios'); ?>" href="index.php?ruta=usuarios" <?php echo $es('usuarios') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Usuarios
+      </a>
+      <a class="<?php echo $es('disponibilidad_arbitros'); ?>" href="index.php?ruta=disponibilidad_arbitros" <?php echo $es('disponibilidad_arbitros') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Disponibilidad Árbitros
+      </a>
+    </nav>
+  </div>
+  <div class="separador"></div>
+  <div class="grupo">
+    <div class="grupo-titulo">Cuenta</div>
+    <nav>
+      <a class="<?php echo $es('perfil'); ?>" href="index.php?ruta=perfil" <?php echo $es('perfil') ? 'aria-current="page"' : ''; ?>>
+        <span class="icono" aria-hidden="true"></span> Perfil
+      </a>
+      <a class="salir" href="index.php?ruta=logout">
+        <span class="icono" aria-hidden="true"></span> Salir
+      </a>
+    </nav>
+  </div>
+</aside>

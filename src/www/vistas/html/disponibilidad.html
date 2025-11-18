@@ -1,0 +1,51 @@
+<?php /** Vista: disponibilidad del árbitro */ ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Mi Disponibilidad</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+<div class="layout-principal">
+    <?php require __DIR__ . '/menu_arbitro.html'; ?>
+  <main class="area-contenido">
+    <h1>Disponibilidad</h1>
+    <?php if (!empty($flash)): ?>
+        <div class="alerta <?php echo $flash['exito'] ? 'exito' : 'error'; ?>"><?php echo htmlspecialchars($flash['mensaje']); ?></div>
+    <?php endif; ?>
+    <section class="seccion">
+        <h2>Registrar Disponibilidad</h2>
+        <form method="POST" action="index.php?ruta=disponibilidad">
+            <input type="hidden" name="accion" value="guardar" />
+            <input type="date" name="fecha" required />
+            <label><input type="checkbox" name="manana" /> Mañana</label>
+            <label><input type="checkbox" name="tarde" /> Tarde</label>
+            <input name="observaciones" placeholder="Observaciones" />
+            <button class="boton-primario" type="submit">Guardar</button>
+        </form>
+    </section>
+    <section class="seccion">
+        <h2>Disponibilidad Futura</h2>
+        <table class="tabla">
+            <thead>
+                <tr><th>Fecha</th><th>Mañana</th><th>Tarde</th><th>Obs. Mañana</th><th>Obs. Tarde</th></tr>
+            </thead>
+            <tbody>
+            <?php foreach ($disponibilidad as $d): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($d['fecha']); ?></td>
+                    <td><?php echo $d['manana'] ? 'Sí' : 'No'; ?></td>
+                    <td><?php echo $d['tarde'] ? 'Sí' : 'No'; ?></td>
+                    <td><?php echo htmlspecialchars($d['observacion_manana'] ?? ''); ?></td>
+                    <td><?php echo htmlspecialchars($d['observacion_tarde'] ?? ''); ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
+    </main>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
